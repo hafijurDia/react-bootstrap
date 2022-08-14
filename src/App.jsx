@@ -91,6 +91,7 @@ const initialContacts = [
 function App() {
 
   const [contacts, setContacts] = useState(initialContacts)
+
   const deleteContact = (id) => {
     const updateContacts = contacts.filter(contact => contact.id !==  id)
     setContacts(updateContacts)
