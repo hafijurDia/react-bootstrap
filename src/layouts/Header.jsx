@@ -1,11 +1,15 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import {Navbar,Nav,Form,Button,NavDropdown,Container} from 'react-bootstrap'
+import { NavLink, Link } from 'react-router-dom'
+import ReactSwitch from 'react-switch'
+import { ThemeContext } from '../context/Theme.context';
 
 export default function Header() {
+  const {toggleTheme,theme} = useContext(ThemeContext);
   return (
     <Navbar sticky="top" bg="light" expand="lg">
       <Container>
-        <Navbar.Brand href="#" className='brand'>Dev Manager</Navbar.Brand>
+        <Navbar.Brand as={Link} to='/' className='brand'>Dev Manager</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -13,14 +17,12 @@ export default function Header() {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="#action1">Contacts</Nav.Link>
-            <Nav.Link href="#action2">Register</Nav.Link>
-            
-            <Nav.Link href="#" disabled>
-              Login
-            </Nav.Link>
+            <Nav.Link as={NavLink} to='/contacts'>Contacts</Nav.Link>
+            <Nav.Link as={NavLink} to='/add-contact'>Add Contact</Nav.Link>
+            <Nav.Link as={NavLink} to='/register'>Register</Nav.Link>
+            <Nav.Link as={NavLink} to='/login'>Login</Nav.Link>
           </Nav>
-          <Form className="d-flex">
+          {/* <Form className="d-flex">
             <Form.Control
               type="search"
               placeholder="Search"
@@ -28,7 +30,13 @@ export default function Header() {
               aria-label="Search"
             />
             <Button variant="outline-success">Search</Button>
-          </Form>
+          </Form> */}
+          <div className="switch">
+            
+            <ReactSwitch onChange={toggleTheme} checked={theme === 'dark'}/>
+            <label style={{verticalAlign: 'super'}}>{theme === 'light' ? 'Light Mode':'Dark Mode'}</label>
+          </div>
+          
         </Navbar.Collapse>
       </Container>
     </Navbar>
