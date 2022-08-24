@@ -54,7 +54,7 @@ export default function Contact({ contact}) {
           </Button>
         </Card.Link>
         <Card.Link>
-        <Button variant='danger' size='md' onClick={() => deleteContact(id)}>
+        <Button variant='danger' size='md' onClick={() => handleDelete(id)}>
             <FaTrashAlt />
         </Button>
         </Card.Link>

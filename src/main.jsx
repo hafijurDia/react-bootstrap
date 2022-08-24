@@ -7,14 +7,20 @@ import './index.css'
 import 'react-toastify/dist/ReactToastify.min.css';
 import {ContactProvider} from './context/Contact.context';
 import { ThemeProvider } from './context/Theme.context';
+import { AuthProvider } from './context/Auth.Context';
+import {BrowserRouter} from 'react-router-dom'
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ContactProvider>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
-    </ContactProvider>
+    <BrowserRouter>
+    <ThemeProvider>
+      <AuthProvider>
+        <ContactProvider>
+          <App />
+        </ContactProvider>
+      </AuthProvider>
+    </ThemeProvider>
+    </BrowserRouter>
   </React.StrictMode>
 )

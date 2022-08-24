@@ -1,6 +1,26 @@
-import {createContext, useState} from 'react'
+import {createContext, useReducer, useState} from 'react'
+import { FaReacteurope } from 'react-icons/fa';
 import { toast } from 'react-toastify'
 import { v4 as uuidv4 } from 'uuid';
+import { date } from 'yup/lib/locale';
+
+import contactReducer from './reducer';
+import { ADD_CONTACT,CONTACT_DELETE,UPDATE_CONTACT } from './types';
+
+//create contact context
+export const ContactContext = createContext()
+
+//if existing date is string then parse It as object (suitable for datePicker field) 
+//if existing data is Object then don't parse it
+// import {parse} from 'date-fns'
+// const parseDate =
+//     contact?.dateOfBirth instanceof Object
+//       ? contact?.dateOfBirth
+//       : parse(contact?.dateOfBirth, 'dd/MM/yyyy', new Date())
+
+//   const [birthYear, setBirthYear] = useState(
+//     contact?.date ? parseDate : new Date()
+//   )
 
 const initialContacts = [
     {
@@ -11,7 +31,7 @@ const initialContacts = [
       profession: 'developer',
       gender: 'female',
       image: 'https://randomuser.me/api/portraits/women/75.jpg',
-      dateOfBirth: '05/11/2021',
+      dateOfBirth: new Date(),
       bio: 'All About me',
     },
     {
@@ -22,7 +42,7 @@ const initialContacts = [
       profession: 'designer',
       gender: 'male',
       image: 'https://randomuser.me/api/portraits/men/75.jpg',
-      dateOfBirth: '04/04/2022',
+      dateOfBirth: new Date(),
       bio: 'All About me',
     },
     {
@@ -33,7 +53,7 @@ const initialContacts = [
       profession: 'marketer',
       gender: 'male',
       image: 'https://randomuser.me/api/portraits/men/78.jpg',
-      dateOfBirth: '17/05/2022',
+      dateOfBirth: new Date(),
       bio: 'All About me',
     },
     {
@@ -44,7 +64,7 @@ const initialContacts = [
       profession: 'developer',
       gender: 'female',
       image: 'https://randomuser.me/api/portraits/women/80.jpg',
-      dateOfBirth: '30/07/2022',
+      dateOfBirth: new Date(),
       bio: 'All About me',
     },
     {
@@ -55,7 +75,7 @@ const initialContacts = [
       gender: 'male',
       profession: 'marketer',
       image: 'https://randomuser.me/api/portraits/men/56.jpg',
-      dateOfBirth: '21/03/2022',
+      dateOfBirth: new Date(),
       bio: 'All About me',
     },
     {
@@ -66,7 +86,7 @@ const initialContacts = [
       profession: 'designer',
       gender: 'female',
       image: 'https://randomuser.me/api/portraits/women/81.jpg',
-      dateOfBirth: '16/01/2022',
+      dateOfBirth: new Date(),
       bio: 'All About me',
     },
     {
@@ -77,46 +97,25 @@ const initialContacts = [
       gender: 'male',
       profession: 'marketer',
       image: 'https://randomuser.me/api/portraits/men/80.jpg',
-      dateOfBirth: '05/02/2022',
+      dateOfBirth: new Date(),
       bio: 'All About me',
     },
   ]
 
-//create contact context
-export const ContactContext = createContext()
-
 // create provider
 export const ContactProvider = ({ children }) => {
-    const [contacts, setContacts] = useState(initialContacts)
-
+    const [contacts, dispatch] = useReducer(contactReducer, initialContacts)
+    //add contact
     const addContact = contact => {
-      let contactToAdd = {
-        id: uuidv4(),
-        ...contact
-      }
-      setContacts([contactToAdd, ...contacts])
-    
+      dispatch({type: ADD_CONTACT, payload: contact })
     }
-  
+    //delete contact
     const deleteContact = (id) => {
-      toast.success("Contact Deleted Successfully !")
-      const updateContacts = contacts.filter(contact => contact.id !==  id)
-      setContacts(updateContacts)
+      dispatch({type: CONTACT_DELETE, payload: id })
     }
-  
+    //update contact
     const updateContact = (contactToUpdate, id) => {
-  
-      const contactWithUpdate = contacts.map((contact) => {
-        if (contact.id === id) {
-          //update
-          return {
-            ...contactToUpdate,
-          }
-        }else{
-          return contact
-        }
-      })
-      setContacts(contactWithUpdate)
+      dispatch({type: UPDATE_CONTACT, payload:{id, contactToUpdate}})
   
     }
 
