@@ -1,7 +1,14 @@
 import axios from "axios";
 
-const axiosPublicIntance = axios.create({
+export const axiosPublicIntance = axios.create({
     baseURL: 'http://localhost:1337/api/'
 })
 
-export default axiosPublicIntance
+
+export const axiosPrivateIntance = (token) => axios.create({
+    baseURL: 'http://localhost:1337/api/',
+    headers: {
+        Authorization: `Bearer ${token}`,
+      },
+})
+

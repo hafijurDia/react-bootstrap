@@ -7,16 +7,14 @@ import * as yup from 'yup'
 import FormTextInput from '../layouts/FormTextInput'
 import { AuthContext } from '../context/Auth.Context';
 
+
 const schema = yup.object({
     email: yup
       .string()
       .required('Email is Required'),
-    password: yup
-      .string()
-      .required('password is required')
   })
 
-const Login = () => {
+function ForgotPassword() {
     const {
         register,
         handleSubmit,
@@ -25,17 +23,12 @@ const Login = () => {
             resolver: yupResolver(schema),
         })
 
-    const {useLogin} = useContext(AuthContext);
-
     const onSubmit = (data) => {
-        useLogin({
-            identifier: data.email,
-            password: data.password,
-        })
+     
     }
     return (
         <>
-            <h2 className='text-center mb-3'>Login</h2>
+            <h2 className='text-center mb-3'>Forgot Password?</h2>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormTextInput
                 name='email'
@@ -45,17 +38,6 @@ const Login = () => {
                 register={register}
                 defaultValue='samimfazlu091@gmail.com'
                 />
-                <FormTextInput
-                name='password'
-                label='password'
-                placeholder='Enter password'
-                errors={errors}
-                register={register}
-                type='password'
-                defaultValue='abcdeFf1@'
-                />
-
-                <p>Forgot password? <Link to='/forgot-password'>Click here</Link></p>
 
                 <Button
                 variant='primary'
@@ -64,12 +46,11 @@ const Login = () => {
                 disabled={isSubmitting ? 'disabled' : ''}
                 className='text-center d-inline-block w-auto'
                 >
-                Login
+                Submit
                 </Button>
             </Form>
         </>
     );
 }
 
-export default Login;
-
+export default ForgotPassword

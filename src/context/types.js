@@ -1,3 +1,4 @@
 export const ADD_CONTACT = 'ADD_CONTACT'
 export const CONTACT_DELETE = 'CONTACT_DELETE'
 export const UPDATE_CONTACT = 'UPDATE_CONTACT'
+export const LOAD_CONTACTS = 'LOAD_CONTACTS'

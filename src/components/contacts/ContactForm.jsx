@@ -1,4 +1,4 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect,useContext } from "react";
 import { Form, Col, Button, Row } from "react-bootstrap";
 import DatePicker from "react-datepicker";
 import { useForm } from "react-hook-form";
@@ -6,6 +6,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { ContactContext } from "../../context/Contact.context";
 
 const schema = yup.object({
   firstName: yup
@@ -48,7 +49,7 @@ export default function ContactForm({ addContact, updateContact, contact }) {
     profession: contact?.profession || "developer",
     bio: contact?.bio || "Hi this is hafijur",
     image: contact?.image || "https://randomuser.me/api/portraits/men/78.jpg",
-    dateOfBirth: contact?.dateOfBirth || new Date(),
+    dateOfBirth: (contact?.dateOfBirth && new Date(contact?.dateOfBirth)) || new Date(),
   };
 
   const {
@@ -100,13 +101,10 @@ export default function ContactForm({ addContact, updateContact, contact }) {
     const id = contact?.id;
 
     if (id) {
-      toast.success("Contact Updated Successfully !");
       updateContact(data, id);
     } else {
-      toast.success("Contact Added Successfully !");
       addContact(data);
     }
-    navigate("/contacts");
   };
 
   // const {id,firstName,lastName,email,profession,gender,image,dateOfBirth,bio} = contact

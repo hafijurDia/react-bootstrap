@@ -6,14 +6,16 @@ import {FaEye,FaTrashAlt,FaPenAlt} from 'react-icons/fa'
 import { toast } from 'react-toastify'
 import { format } from 'date-fns'
 import { ContactContext } from '../context/Contact.context'
+import { AuthContext } from '../context/Auth.Context'
 
 const ContactDetails = () => {
     const {contacts,deleteContact} = useContext(ContactContext);
+    const { user } = useContext(AuthContext)
 
     const [contact, setContact] = useState({})
     const navigate = useNavigate()
     const { id } = useParams()
-    const foundContact = contacts.find((contact) => contact.id === id)
+    const foundContact = contacts.find((contact) => contact.id === +id)
 
     useEffect(() => {
         if (id && foundContact) {
@@ -21,10 +23,10 @@ const ContactDetails = () => {
         }
       }, [id])
 
+      const isOwner = user.id === foundContact?.author?.data?.id
+
       const handleDelete = (id) => {
-        toast.success('Contact is deleted successfully')
         deleteContact(id)
-        navigate('/contacts')
       }
 
       const {
@@ -65,6 +67,8 @@ const ContactDetails = () => {
             </ListGroup.Item>
         </ListGroup>
         <div className='card-btn mt-3'>
+        {isOwner && (
+                  <>
             <Card.Link as={Link} to={`/edit-contact/${id}`}>
             <Button variant='warning ms-3' size='md' type='view'>
                 <FaPenAlt />
@@ -75,6 +79,9 @@ const ContactDetails = () => {
                 <FaTrashAlt />
             </Button>
             </Card.Link>
+
+            </>
+                )}
         </div>
         
         </Card.Body>

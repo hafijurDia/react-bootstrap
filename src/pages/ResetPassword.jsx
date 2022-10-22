@@ -7,16 +7,23 @@ import * as yup from 'yup'
 import FormTextInput from '../layouts/FormTextInput'
 import { AuthContext } from '../context/Auth.Context';
 
+
 const schema = yup.object({
-    email: yup
-      .string()
-      .required('Email is Required'),
     password: yup
-      .string()
-      .required('password is required')
+    .string()
+    .required('password is required')
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{6,})/,
+      'Must Contain 6 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character'
+    ),
+  confirmPassword: yup
+    .string()
+    .required('confirm Password is Required')
+    .oneOf([yup.ref('password')], "confirm password doesn't match"),
+    
   })
 
-const Login = () => {
+function ResetPassword() {
     const {
         register,
         handleSubmit,
@@ -25,37 +32,27 @@ const Login = () => {
             resolver: yupResolver(schema),
         })
 
-    const {useLogin} = useContext(AuthContext);
-
     const onSubmit = (data) => {
-        useLogin({
-            identifier: data.email,
-            password: data.password,
-        })
+     
     }
     return (
         <>
-            <h2 className='text-center mb-3'>Login</h2>
+            <h2 className='text-center mb-3'>Reset Password</h2>
             <Form onSubmit={handleSubmit(onSubmit)}>
                 <FormTextInput
-                name='email'
-                label='Email'
-                placeholder='Enter Your Email'
+                name='password'
+                label='New Password'
+                placeholder='Enter Your Password'
                 errors={errors}
                 register={register}
-                defaultValue='samimfazlu091@gmail.com'
                 />
                 <FormTextInput
                 name='password'
-                label='password'
-                placeholder='Enter password'
+                label='Cofirm Password'
+                placeholder='Confirm Your Password'
                 errors={errors}
                 register={register}
-                type='password'
-                defaultValue='abcdeFf1@'
                 />
-
-                <p>Forgot password? <Link to='/forgot-password'>Click here</Link></p>
 
                 <Button
                 variant='primary'
@@ -64,12 +61,11 @@ const Login = () => {
                 disabled={isSubmitting ? 'disabled' : ''}
                 className='text-center d-inline-block w-auto'
                 >
-                Login
+                Submit
                 </Button>
             </Form>
         </>
     );
 }
 
-export default Login;
-
+export default ResetPassword

@@ -36,6 +36,9 @@ export default function Header() {
             <Nav.Link as={NavLink} to="/add-contact">
               Add Contact
             </Nav.Link>
+            <Nav.Link as={NavLink} to="/dashboard/profile">
+              Dashboard
+            </Nav.Link>
             <Nav.Link onClick={logout}>Logout</Nav.Link>
             </>
             }

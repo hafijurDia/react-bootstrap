@@ -5,8 +5,10 @@ import {format} from 'date-fns'
 import {Link} from 'react-router-dom'
 import { ContactContext } from '../../context/Contact.context'
 import { toast } from 'react-toastify'
+import { AuthContext } from '../../context/Auth.Context'
 
 export default function Contact({ contact}) {
+  const {user} = useContext(AuthContext);
   const {deleteContact} = useContext(ContactContext);
   const {
     id,
@@ -19,10 +21,10 @@ export default function Contact({ contact}) {
     dateOfBirth,
     bio } = contact
 
+    const isOwner = user.id === contact?.author?.data?.id
+
     const handleDelete = (id) => {
-      toast.success('Contact is deleted successfully')
       deleteContact(id)
-      navigate('/contacts')
     }
 
   return (
@@ -53,11 +55,13 @@ export default function Contact({ contact}) {
             <FaEye />
           </Button>
         </Card.Link>
+        {isOwner && (
         <Card.Link>
         <Button variant='danger' size='md' onClick={() => handleDelete(id)}>
             <FaTrashAlt />
         </Button>
         </Card.Link>
+        )}
       </div>
        
       </Card.Body>
